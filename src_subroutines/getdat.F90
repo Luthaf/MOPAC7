@@ -1,14 +1,14 @@
       subroutine getdat(input, output)
 !-----------------------------------------------
-!   M o d u l e s 
+!   M o d u l e s
 !-----------------------------------------------
       use molkst_C, only : natoms, jobnam
-!...Translated by Pacific-Sierra Research 77to90  4.4G  22:53:42  03/15/06  
-!...Switches: -rl INDDO=2 INDIF=2 
+!...Translated by Pacific-Sierra Research 77to90  4.4G  22:53:42  03/15/06
+!...Switches: -rl INDDO=2 INDIF=2
 !-----------------------------------------------
 !   I n t e r f a c e   B l o c k s
-!----------------------------------------------- 
-      use mopend_I 
+!-----------------------------------------------
+      use mopend_I
       implicit none
 !-----------------------------------------------
       integer, intent (in) :: input, output
@@ -16,12 +16,12 @@
 !   L o c a l   V a r i a b l e s
 !-----------------------------------------------
       integer, parameter :: from_data_set = 7
-      integer :: i 
-      logical :: exists 
-      character :: line*80 
-      external getarg
-      integer, external :: iargc
-      save i 
+      integer :: i
+      logical :: exists
+      character :: line*80
+!      external getarg
+!      integer, external :: iargc
+      save i
 !-----------------------------------------------
 !
 !***********************************************************************
@@ -59,11 +59,11 @@
 !  The UNIT number is contained in IFILES.  If you want to change the
 !  UNIT number, modify IFILES in this subroutine AFTER the line "C====="
 !
-!********************************************************************  
-      if (iargc() == 0) then 
-        jobnam = 'test' 
-      else 
-        call getarg (1, jobnam) 
+!********************************************************************
+      if (iargc() == 0) then
+        jobnam = 'test'
+      else
+        call getarg (1, jobnam)
       endif
 !
 ! Check for the data set in the order: <file>.mop, <file>.dat, <file>
@@ -77,39 +77,38 @@
         line = jobnam(:len_trim(jobnam))
         inquire(file=line, exist=exists)
       end if
-      if (exists) then 
+      if (exists) then
         open(unit=from_data_set, file=line, status='OLD', position=&
-          'asis') 
-      else 
-        write (output, *) ' The input data file'//jobnam(:i)//'.dat does not exist' 
-        call mopend ('The input data file does not exist') 
-        return  
-      endif 
+          'asis')
+      else
+        write (output, *) ' The input data file'//jobnam(:i)//'.dat does not exist'
+        call mopend ('The input data file does not exist')
+        return
+      endif
 !
 !  CLOSE UNIT IFILES(5) IN CASE IT WAS ALREADY PRE-ASSIGNED.
 !
-      close(input) 
+      close(input)
       open(unit=input, file=jobnam(:len_trim(jobnam))//'.temp', status='UNKNOWN', &
-        position='asis') 
-      rewind input 
-      rewind from_data_set 
-      i = 0 
-   20 continue 
-      read (from_data_set, '(A80)', end=30, err=30) line 
-      i = i + 1 
-      if (line(1:1) /= '*') write (input, '(A80)') line 
-      go to 20 
-   30 continue 
-      line = ' ' 
-      write (input, '(A80)') line 
-      rewind input 
-      if (i < 3) then 
-        write (output, '(A)') ' INPUT FILE MISSING OR EMPTY' 
-        call mopend ('INPUT FILE MISSING OR EMPTY') 
-        return  
-      endif 
+        position='asis')
+      rewind input
+      rewind from_data_set
+      i = 0
+   20 continue
+      read (from_data_set, '(A80)', end=30, err=30) line
+      i = i + 1
+      if (line(1:1) /= '*') write (input, '(A80)') line
+      go to 20
+   30 continue
+      line = ' '
+      write (input, '(A80)') line
+      rewind input
+      if (i < 3) then
+        write (output, '(A)') ' INPUT FILE MISSING OR EMPTY'
+        call mopend ('INPUT FILE MISSING OR EMPTY')
+        return
+      endif
       natoms = i
-      close(from_data_set) 
-      return  
-      end subroutine getdat 
- 
+      close(from_data_set)
+      return
+      end subroutine getdat
