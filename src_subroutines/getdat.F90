@@ -60,10 +60,10 @@
 !  UNIT number, modify IFILES in this subroutine AFTER the line "C====="
 !
 !********************************************************************
-      if (iargc() == 0) then
+      if (command_argument_count() == 0) then
         jobnam = 'test'
       else
-        call getarg (1, jobnam)
+        call get_command_argument(1, jobnam)
       endif
 !
 ! Check for the data set in the order: <file>.mop, <file>.dat, <file>
