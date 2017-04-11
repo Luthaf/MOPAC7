@@ -1,4 +1,4 @@
-# CMake based build for MOPAC 7
+# CMake based build for MOPAC 7.1
 
 Get it, build it:
 
